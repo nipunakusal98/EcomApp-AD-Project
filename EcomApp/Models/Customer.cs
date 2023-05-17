@@ -11,5 +11,9 @@ namespace EcomApp.Models
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        // Relationships
+        public List<Order> Orders { get; set; } // Collection navigation property
+        public List<Payment> Payments { get; set; } // Collection navigation property
     }
 }

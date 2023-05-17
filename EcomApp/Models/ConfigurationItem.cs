@@ -1,5 +1,6 @@
 ﻿using EcomApp.Data.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EcomApp.Models
 {
@@ -14,8 +15,9 @@ namespace EcomApp.Models
 
         //Relationships
         public int ComputerModelId { get; set; } // Foreign key
+        [ForeignKey("ComputerModelId")]
         public ComputerModel ComputerModel { get; set; }
-        public List<ComputerModel> ComputerModels { get; set; }
+     
         public List<ComputerRAM> ComputerRAMs { get; set; }
         public List<ComputerVGA> ComputerVGAs { get; set; }
         public List<ComputerProcessor> ComputerProcessors { get; set; }

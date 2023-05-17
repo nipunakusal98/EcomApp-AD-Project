@@ -1,5 +1,6 @@
 ﻿using EcomApp.Data.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 
 namespace EcomApp.Models
@@ -15,15 +16,17 @@ namespace EcomApp.Models
         public string ShippingAddress { get; set; }
         public string BillingAddress { get; set; }
 
-        //Relationships
+        // Foreign keys
         public int CustomerId { get; set; } // Foreign key
+        [ForeignKey("CustomerId")]
         public Customer Customer { get; set; } // Navigation property
 
         public int ComputerModelId { get; set; } // Foreign key
+        [ForeignKey("ComputerModelId")]
         public ComputerModel ComputerModel { get; set; } // Navigation property
 
-        public List<ConfigurationItem> ConfigurationItems { get; set; }
-
-
+        // Relationships
+        public List<ConfigurationItem> ConfigurationItems { get; set; } // Collection navigation property
+        public List<Payment> Payments { get; set; } // Collection navigation property
     }
 }
