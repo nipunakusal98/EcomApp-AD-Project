@@ -113,6 +113,10 @@ namespace EcomApp.Migrations
                     ModelPictuerURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OperatingSystems = table.Column<int>(type: "int", nullable: false),
                     AntiVirus = table.Column<int>(type: "int", nullable: false),
+                    RAMId = table.Column<int>(type: "int", nullable: false),
+                    ComputerVGAId = table.Column<int>(type: "int", nullable: false),
+                    ComputerRAMId = table.Column<int>(type: "int", nullable: false),
+                    ComputerProcessorId = table.Column<int>(type: "int", nullable: false),
                     ComputerSeriesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -246,7 +250,6 @@ namespace EcomApp.Migrations
                     RAMId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RAMDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RAMSize = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RAMPictuerURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RAMPrice = table.Column<int>(type: "int", nullable: false),
                     ConfigurationItemConfigId = table.Column<int>(type: "int", nullable: true)
@@ -267,7 +270,7 @@ namespace EcomApp.Migrations
                 {
                     ComputerVGAId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ComputerVGASize = table.Column<int>(type: "int", nullable: false),
+                    ComputerVGADescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ComputerVGAPrice = table.Column<int>(type: "int", nullable: false),
                     VGAPictuerURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ConfigurationItemConfigId = table.Column<int>(type: "int", nullable: true)
@@ -282,97 +285,25 @@ namespace EcomApp.Migrations
                         principalColumn: "ConfigId");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ComputerModelComputerProcessor",
-                columns: table => new
-                {
-                    ComputerModelsId = table.Column<int>(type: "int", nullable: false),
-                    ComputerProcessorsComputerProcessorId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ComputerModelComputerProcessor", x => new { x.ComputerModelsId, x.ComputerProcessorsComputerProcessorId });
-                    table.ForeignKey(
-                        name: "FK_ComputerModelComputerProcessor_ComputerModels_ComputerModelsId",
-                        column: x => x.ComputerModelsId,
-                        principalTable: "ComputerModels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ComputerModelComputerProcessor_ComputerProcessors_ComputerProcessorsComputerProcessorId",
-                        column: x => x.ComputerProcessorsComputerProcessorId,
-                        principalTable: "ComputerProcessors",
-                        principalColumn: "ComputerProcessorId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ComputerModelComputerRAM",
-                columns: table => new
-                {
-                    ComputerModelsId = table.Column<int>(type: "int", nullable: false),
-                    ComputerRAMsRAMId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ComputerModelComputerRAM", x => new { x.ComputerModelsId, x.ComputerRAMsRAMId });
-                    table.ForeignKey(
-                        name: "FK_ComputerModelComputerRAM_ComputerModels_ComputerModelsId",
-                        column: x => x.ComputerModelsId,
-                        principalTable: "ComputerModels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ComputerModelComputerRAM_ComputerRAMs_ComputerRAMsRAMId",
-                        column: x => x.ComputerRAMsRAMId,
-                        principalTable: "ComputerRAMs",
-                        principalColumn: "RAMId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ComputerModelComputerVGA",
-                columns: table => new
-                {
-                    ComputerModelsId = table.Column<int>(type: "int", nullable: false),
-                    ComputerVGAsComputerVGAId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ComputerModelComputerVGA", x => new { x.ComputerModelsId, x.ComputerVGAsComputerVGAId });
-                    table.ForeignKey(
-                        name: "FK_ComputerModelComputerVGA_ComputerModels_ComputerModelsId",
-                        column: x => x.ComputerModelsId,
-                        principalTable: "ComputerModels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ComputerModelComputerVGA_ComputerVGAs_ComputerVGAsComputerVGAId",
-                        column: x => x.ComputerVGAsComputerVGAId,
-                        principalTable: "ComputerVGAs",
-                        principalColumn: "ComputerVGAId",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.CreateIndex(
+                name: "IX_ComputerModels_ComputerProcessorId",
+                table: "ComputerModels",
+                column: "ComputerProcessorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ComputerModelComputerProcessor_ComputerProcessorsComputerProcessorId",
-                table: "ComputerModelComputerProcessor",
-                column: "ComputerProcessorsComputerProcessorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ComputerModelComputerRAM_ComputerRAMsRAMId",
-                table: "ComputerModelComputerRAM",
-                column: "ComputerRAMsRAMId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ComputerModelComputerVGA_ComputerVGAsComputerVGAId",
-                table: "ComputerModelComputerVGA",
-                column: "ComputerVGAsComputerVGAId");
+                name: "IX_ComputerModels_ComputerRAMId",
+                table: "ComputerModels",
+                column: "ComputerRAMId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ComputerModels_ComputerSeriesId",
                 table: "ComputerModels",
                 column: "ComputerSeriesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ComputerModels_RAMId",
+                table: "ComputerModels",
+                column: "RAMId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ComputerProcessors_ConfigurationItemConfigId",
@@ -423,19 +354,50 @@ namespace EcomApp.Migrations
                 name: "IX_Payments_OrderId",
                 table: "Payments",
                 column: "OrderId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ComputerModels_ComputerProcessors_ComputerProcessorId",
+                table: "ComputerModels",
+                column: "ComputerProcessorId",
+                principalTable: "ComputerProcessors",
+                principalColumn: "ComputerProcessorId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ComputerModels_ComputerRAMs_RAMId",
+                table: "ComputerModels",
+                column: "RAMId",
+                principalTable: "ComputerRAMs",
+                principalColumn: "RAMId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_ComputerModels_ComputerVGAs_ComputerRAMId",
+                table: "ComputerModels",
+                column: "ComputerRAMId",
+                principalTable: "ComputerVGAs",
+                principalColumn: "ComputerVGAId",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ComputerModelComputerProcessor");
+            migrationBuilder.DropForeignKey(
+                name: "FK_ComputerModels_ComputerProcessors_ComputerProcessorId",
+                table: "ComputerModels");
 
-            migrationBuilder.DropTable(
-                name: "ComputerModelComputerRAM");
+            migrationBuilder.DropForeignKey(
+                name: "FK_ComputerModels_ComputerRAMs_RAMId",
+                table: "ComputerModels");
 
-            migrationBuilder.DropTable(
-                name: "ComputerModelComputerVGA");
+            migrationBuilder.DropForeignKey(
+                name: "FK_ComputerModels_ComputerSeries_ComputerSeriesId",
+                table: "ComputerModels");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ComputerModels_ComputerVGAs_ComputerRAMId",
+                table: "ComputerModels");
 
             migrationBuilder.DropTable(
                 name: "Payments");
@@ -456,6 +418,12 @@ namespace EcomApp.Migrations
                 name: "ComputerRAMs");
 
             migrationBuilder.DropTable(
+                name: "ComputerSeries");
+
+            migrationBuilder.DropTable(
+                name: "ComputerCategories");
+
+            migrationBuilder.DropTable(
                 name: "ComputerVGAs");
 
             migrationBuilder.DropTable(
@@ -469,12 +437,6 @@ namespace EcomApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Customers");
-
-            migrationBuilder.DropTable(
-                name: "ComputerSeries");
-
-            migrationBuilder.DropTable(
-                name: "ComputerCategories");
         }
     }
 }

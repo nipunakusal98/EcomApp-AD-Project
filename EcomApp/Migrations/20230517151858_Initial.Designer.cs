@@ -4,6 +4,7 @@ using EcomApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcomApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230517151858_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,6 +60,9 @@ namespace EcomApp.Migrations
                     b.Property<int>("ComputerProcessorId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ComputerRAMId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ComputerSeriesId")
                         .HasColumnType("int");
 
@@ -84,9 +90,9 @@ namespace EcomApp.Migrations
 
                     b.HasIndex("ComputerProcessorId");
 
-                    b.HasIndex("ComputerSeriesId");
+                    b.HasIndex("ComputerRAMId");
 
-                    b.HasIndex("ComputerVGAId");
+                    b.HasIndex("ComputerSeriesId");
 
                     b.HasIndex("RAMId");
 
@@ -422,15 +428,15 @@ namespace EcomApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EcomApp.Models.ComputerSeries", "ComputerSeries")
+                    b.HasOne("EcomApp.Models.ComputerVGA", "computerVGA")
                         .WithMany("ComputerModels")
-                        .HasForeignKey("ComputerSeriesId")
+                        .HasForeignKey("ComputerRAMId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EcomApp.Models.ComputerVGA", "ComputerVGA")
+                    b.HasOne("EcomApp.Models.ComputerSeries", "ComputerSeries")
                         .WithMany("ComputerModels")
-                        .HasForeignKey("ComputerVGAId")
+                        .HasForeignKey("ComputerSeriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -446,7 +452,7 @@ namespace EcomApp.Migrations
 
                     b.Navigation("ComputerSeries");
 
-                    b.Navigation("ComputerVGA");
+                    b.Navigation("computerVGA");
                 });
 
             modelBuilder.Entity("EcomApp.Models.ComputerProcessor", b =>
@@ -484,7 +490,7 @@ namespace EcomApp.Migrations
             modelBuilder.Entity("EcomApp.Models.ConfigurationItem", b =>
                 {
                     b.HasOne("EcomApp.Models.ComputerModel", "ComputerModel")
-                        .WithMany("ConfigurationItems")
+                        .WithMany()
                         .HasForeignKey("ComputerModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -499,7 +505,7 @@ namespace EcomApp.Migrations
             modelBuilder.Entity("EcomApp.Models.Order", b =>
                 {
                     b.HasOne("EcomApp.Models.ComputerModel", "ComputerModel")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("ComputerModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -533,13 +539,6 @@ namespace EcomApp.Migrations
             modelBuilder.Entity("EcomApp.Models.ComputerCategory", b =>
                 {
                     b.Navigation("ComputerSeries");
-                });
-
-            modelBuilder.Entity("EcomApp.Models.ComputerModel", b =>
-                {
-                    b.Navigation("ConfigurationItems");
-
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("EcomApp.Models.ComputerProcessor", b =>

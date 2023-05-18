@@ -6,6 +6,10 @@ namespace EcomApp.Data
     public class AppDbContext:DbContext
 
     {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+
+        }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<ComputerCategory> ComputerCategories { get; set; }
         public DbSet<ComputerSeries> ComputerSeries { get; set; }
@@ -19,10 +23,7 @@ namespace EcomApp.Data
         public DbSet<ProcessorBrand> ProcessorBrands { get; set; }
         public DbSet<RAMBrand> RAMBrands { get; set; }
         public DbSet<VGABrand> VGABrands { get; set; }
-        public AppDbContext(DbContextOptions<AppDbContext> options):base(options) 
-        {
-
-        }
+       
        
     }
 }

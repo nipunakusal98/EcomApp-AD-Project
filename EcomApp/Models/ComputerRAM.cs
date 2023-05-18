@@ -7,7 +7,6 @@ namespace EcomApp.Models
         [Key]
         public int RAMId { get; set; }
         public string RAMDescription { get; set; }
-        public string RAMSize { get; set; }
         public string RAMPictuerURL { get; set; }
         public int RAMPrice { get; set; }
 

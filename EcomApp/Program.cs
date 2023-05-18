@@ -32,4 +32,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+// Seed Datbase
+AppDbInitializer.Seed(app);
+
 app.Run();
+
+

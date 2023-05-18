@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcomApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230517074102_Initial")]
-    partial class Initial
+    [Migration("20230517161954_Migration1")]
+    partial class Migration1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,51 +24,6 @@ namespace EcomApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ComputerModelComputerProcessor", b =>
-                {
-                    b.Property<int>("ComputerModelsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ComputerProcessorsComputerProcessorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ComputerModelsId", "ComputerProcessorsComputerProcessorId");
-
-                    b.HasIndex("ComputerProcessorsComputerProcessorId");
-
-                    b.ToTable("ComputerModelComputerProcessor");
-                });
-
-            modelBuilder.Entity("ComputerModelComputerRAM", b =>
-                {
-                    b.Property<int>("ComputerModelsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ComputerRAMsRAMId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ComputerModelsId", "ComputerRAMsRAMId");
-
-                    b.HasIndex("ComputerRAMsRAMId");
-
-                    b.ToTable("ComputerModelComputerRAM");
-                });
-
-            modelBuilder.Entity("ComputerModelComputerVGA", b =>
-                {
-                    b.Property<int>("ComputerModelsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ComputerVGAsComputerVGAId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ComputerModelsId", "ComputerVGAsComputerVGAId");
-
-                    b.HasIndex("ComputerVGAsComputerVGAId");
-
-                    b.ToTable("ComputerModelComputerVGA");
-                });
 
             modelBuilder.Entity("EcomApp.Models.ComputerCategory", b =>
                 {
@@ -102,7 +57,13 @@ namespace EcomApp.Migrations
                     b.Property<int>("AntiVirus")
                         .HasColumnType("int");
 
+                    b.Property<int>("ComputerProcessorId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ComputerSeriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ComputerVGAId")
                         .HasColumnType("int");
 
                     b.Property<string>("ModelPictuerURL")
@@ -119,9 +80,18 @@ namespace EcomApp.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<int>("RAMId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("ComputerProcessorId");
+
                     b.HasIndex("ComputerSeriesId");
+
+                    b.HasIndex("ComputerVGAId");
+
+                    b.HasIndex("RAMId");
 
                     b.ToTable("ComputerModels");
                 });
@@ -177,10 +147,6 @@ namespace EcomApp.Migrations
                     b.Property<int>("RAMPrice")
                         .HasColumnType("int");
 
-                    b.Property<string>("RAMSize")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("RAMId");
 
                     b.HasIndex("ConfigurationItemConfigId");
@@ -222,10 +188,11 @@ namespace EcomApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ComputerVGAId"));
 
-                    b.Property<int>("ComputerVGAPrice")
-                        .HasColumnType("int");
+                    b.Property<string>("ComputerVGADescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ComputerVGASize")
+                    b.Property<int>("ComputerVGAPrice")
                         .HasColumnType("int");
 
                     b.Property<int?>("ConfigurationItemConfigId")
@@ -450,60 +417,39 @@ namespace EcomApp.Migrations
                     b.ToTable("VGABrands");
                 });
 
-            modelBuilder.Entity("ComputerModelComputerProcessor", b =>
-                {
-                    b.HasOne("EcomApp.Models.ComputerModel", null)
-                        .WithMany()
-                        .HasForeignKey("ComputerModelsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EcomApp.Models.ComputerProcessor", null)
-                        .WithMany()
-                        .HasForeignKey("ComputerProcessorsComputerProcessorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ComputerModelComputerRAM", b =>
-                {
-                    b.HasOne("EcomApp.Models.ComputerModel", null)
-                        .WithMany()
-                        .HasForeignKey("ComputerModelsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EcomApp.Models.ComputerRAM", null)
-                        .WithMany()
-                        .HasForeignKey("ComputerRAMsRAMId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ComputerModelComputerVGA", b =>
-                {
-                    b.HasOne("EcomApp.Models.ComputerModel", null)
-                        .WithMany()
-                        .HasForeignKey("ComputerModelsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EcomApp.Models.ComputerVGA", null)
-                        .WithMany()
-                        .HasForeignKey("ComputerVGAsComputerVGAId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("EcomApp.Models.ComputerModel", b =>
                 {
+                    b.HasOne("EcomApp.Models.ComputerProcessor", "ComputerProcessor")
+                        .WithMany("ComputerModels")
+                        .HasForeignKey("ComputerProcessorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("EcomApp.Models.ComputerSeries", "ComputerSeries")
                         .WithMany("ComputerModels")
                         .HasForeignKey("ComputerSeriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EcomApp.Models.ComputerVGA", "ComputerVGA")
+                        .WithMany("ComputerModels")
+                        .HasForeignKey("ComputerVGAId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EcomApp.Models.ComputerRAM", "ComputerRAM")
+                        .WithMany("ComputerModels")
+                        .HasForeignKey("RAMId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ComputerProcessor");
+
+                    b.Navigation("ComputerRAM");
+
                     b.Navigation("ComputerSeries");
+
+                    b.Navigation("ComputerVGA");
                 });
 
             modelBuilder.Entity("EcomApp.Models.ComputerProcessor", b =>
@@ -599,7 +545,22 @@ namespace EcomApp.Migrations
                     b.Navigation("Orders");
                 });
 
+            modelBuilder.Entity("EcomApp.Models.ComputerProcessor", b =>
+                {
+                    b.Navigation("ComputerModels");
+                });
+
+            modelBuilder.Entity("EcomApp.Models.ComputerRAM", b =>
+                {
+                    b.Navigation("ComputerModels");
+                });
+
             modelBuilder.Entity("EcomApp.Models.ComputerSeries", b =>
+                {
+                    b.Navigation("ComputerModels");
+                });
+
+            modelBuilder.Entity("EcomApp.Models.ComputerVGA", b =>
                 {
                     b.Navigation("ComputerModels");
                 });

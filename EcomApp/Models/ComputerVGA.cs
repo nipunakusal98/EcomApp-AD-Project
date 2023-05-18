@@ -6,7 +6,7 @@ namespace EcomApp.Models
     {
         [Key]
         public int ComputerVGAId { get; set; }
-        public int ComputerVGASize { get; set; }
+        public string ComputerVGADescription { get; set; }
         public int ComputerVGAPrice { get; set; }
 
         public string VGAPictuerURL { get; set; }
